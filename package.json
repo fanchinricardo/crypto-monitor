@@ -1,0 +1,29 @@
+{
+  "name": "crypto-monitor",
+  "version": "1.0.0",
+  "description": "Monitor de criptomoedas com alertas via WhatsApp",
+  "main": "dist/index.js",
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "prisma:generate": "prisma generate",
+    "prisma:push": "prisma db push"
+  },
+  "dependencies": {
+    "@fastify/cors": "^9.0.1",
+    "axios": "^1.7.2",
+    "fastify": "^4.28.0",
+    "node-cron": "^3.0.3",
+    "@prisma/client": "^5.16.0",
+    "dotenv": "^16.4.5",
+    "technicalindicators": "^3.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.0",
+    "@types/node-cron": "^3.0.11",
+    "prisma": "^5.16.0",
+    "tsx": "^4.15.7",
+    "typescript": "^5.4.5"
+  }
+}

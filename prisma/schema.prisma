@@ -1,0 +1,64 @@
+// prisma/schema.prisma
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Coin {
+  id        String   @id @default(uuid())
+  symbol    String   @unique // BTC, ETH, SOL
+  name      String
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now()) @map("created_at")
+
+  priceSnapshots PriceSnapshot[]
+  alerts         Alert[]
+
+  @@map("coins")
+}
+
+model PriceSnapshot {
+  id        String   @id @default(uuid())
+  coinId    String   @map("coin_id")
+  price     Float
+  volume24h Float    @map("volume_24h")
+  change24h Float    @map("change_24h")
+  rsi       Float?
+  ma7       Float?
+  ma25      Float?
+  signal    String?  // buy | sell | hold
+  createdAt DateTime @default(now()) @map("created_at")
+
+  coin Coin @relation(fields: [coinId], references: [id])
+
+  @@index([coinId, createdAt])
+  @@map("price_snapshots")
+}
+
+model Alert {
+  id        String   @id @default(uuid())
+  coinId    String   @map("coin_id")
+  type      String   // buy | sell | price_target
+  message   String
+  price     Float
+  rsi       Float?
+  sentAt    DateTime @default(now()) @map("sent_at")
+  delivered Boolean  @default(false)
+
+  coin Coin @relation(fields: [coinId], references: [id])
+
+  @@index([coinId, sentAt])
+  @@map("alerts")
+}
+
+model Config {
+  id    String @id @default(uuid())
+  key   String @unique
+  value String
+
+  @@map("configs")
+}
