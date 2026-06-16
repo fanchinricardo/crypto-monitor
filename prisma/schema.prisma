@@ -1,6 +1,7 @@
 // prisma/schema.prisma
 generator client {
-  provider = "prisma-client-js"
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "linux-musl-openssl-3.0.x"]
 }
 
 datasource db {
@@ -30,7 +31,7 @@ model PriceSnapshot {
   rsi       Float?
   ma7       Float?
   ma25      Float?
-  signal    String?  // buy | sell | hold
+  signal    String? // buy | sell | hold
   createdAt DateTime @default(now()) @map("created_at")
 
   coin Coin @relation(fields: [coinId], references: [id])
@@ -42,7 +43,7 @@ model PriceSnapshot {
 model Alert {
   id        String   @id @default(uuid())
   coinId    String   @map("coin_id")
-  type      String   // buy | sell | price_target
+  type      String // buy | sell | price_target
   message   String
   price     Float
   rsi       Float?
